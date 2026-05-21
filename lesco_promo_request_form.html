@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lesco Promo Request Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --red: #D0021B;
+    --red-dark: #A80016;
+    --red-light: #ff1a33;
+    --black: #111111;
+    --white: #ffffff;
+    --grey-light: #f5f5f5;
+    --grey-mid: #e0e0e0;
+    --grey-text: #666666;
+    --success: #1a8a4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--grey-light); min-height: 100vh; padding: 0 0 60px 0; }
+
+  .header { background: var(--red); padding: 28px 32px 24px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 220px; height: 220px; background: rgba(255,255,255,0.06); border-radius: 50%; }
+  .header::after { content: ''; position: absolute; right: 60px; bottom: -60px; width: 160px; height: 160px; background: rgba(255,255,255,0.04); border-radius: 50%; }
+  .header-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 28px; color: white; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+  .header-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: rgba(255,255,255,0.7); letter-spacing: 3px; text-transform: uppercase; font-weight: 400; }
+  .header-title { margin-top: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; color: white; line-height: 1.1; text-transform: uppercase; letter-spacing: 1px; }
+  .header-desc { margin-top: 8px; font-size: 14px; color: rgba(255,255,255,0.8); max-width: 460px; line-height: 1.5; }
+
+  .progress-wrap { background: var(--red-dark); padding: 12px 32px; }
+  .progress-label { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; font-family: 'Barlow Condensed', sans-serif; }
+  .progress-bar-bg { background: rgba(255,255,255,0.2); border-radius: 4px; height: 4px; width: 100%; }
+  .progress-bar-fill { background: white; height: 4px; border-radius: 4px; width: 0%; transition: width 0.4s ease; }
+
+  .form-container { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+  .question-card { background: white; border-radius: 12px; padding: 28px 28px 24px; margin-top: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--grey-mid); transition: border-color 0.2s; animation: fadeUp 0.35s ease both; }
+  .question-card:nth-child(1) { animation-delay: 0.05s; }
+  .question-card:nth-child(2) { animation-delay: 0.10s; }
+  .question-card:nth-child(3) { animation-delay: 0.15s; }
+  .question-card:nth-child(4) { animation-delay: 0.20s; }
+  .question-card:nth-child(5) { animation-delay: 0.25s; }
+  .question-card:nth-child(6) { animation-delay: 0.30s; }
+  .question-card:nth-child(7) { animation-delay: 0.35s; }
+  .question-card.active { border-left-color: var(--red); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  .question-number { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+  .question-label { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 4px; line-height: 1.2; }
+  .question-hint { font-size: 12px; color: var(--grey-text); margin-bottom: 16px; font-style: italic; }
+
+  .options-grid { display: flex; flex-direction: column; gap: 8px; }
+  .option-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1.5px solid var(--grey-mid); border-radius: 8px; cursor: pointer; transition: all 0.15s ease; user-select: none; }
+  .option-item:hover { border-color: var(--red); background: #fff5f5; }
+  .option-item.selected { border-color: var(--red); background: #fff0f0; }
+  .option-item input[type="checkbox"], .option-item input[type="radio"] { display: none; }
+  .custom-check { width: 20px; height: 20px; border: 2px solid var(--grey-mid); border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; background: white; }
+  .custom-radio { width: 20px; height: 20px; border: 2px solid var(--grey-mid); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; background: white; }
+  .option-item.selected .custom-check, .option-item.selected .custom-radio { border-color: var(--red); background: var(--red); }
+  .custom-check svg, .custom-radio svg { display: none; }
+  .option-item.selected .custom-check svg, .option-item.selected .custom-radio svg { display: block; }
+  .option-text { font-size: 15px; color: var(--black); font-weight: 500; line-height: 1.3; }
+  .option-item.selected .option-text { color: var(--red-dark); font-weight: 600; }
+
+  textarea { width: 100%; border: 1.5px solid var(--grey-mid); border-radius: 8px; padding: 14px 16px; font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--black); resize: vertical; min-height: 100px; outline: none; transition: border-color 0.15s; background: white; }
+  textarea:focus { border-color: var(--red); }
+  textarea::placeholder { color: #bbb; }
+
+  input[type="month"] { width: 100%; border: 1.5px solid var(--grey-mid); border-radius: 8px; padding: 14px 16px; font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--black); outline: none; transition: border-color 0.15s; background: white; appearance: none; -webkit-appearance: none; }
+  input[type="month"]:focus { border-color: var(--red); }
+
+  .submit-wrap { margin-top: 28px; text-align: center; }
+  .btn-submit { background: var(--red); color: white; border: none; border-radius: 10px; padding: 18px 48px; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.1s; width: 100%; max-width: 360px; box-shadow: 0 4px 16px rgba(208,2,27,0.3); }
+  .btn-submit:hover { background: var(--red-dark); transform: translateY(-1px); }
+  .btn-submit:active { transform: translateY(1px); }
+  .btn-submit:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; transform: none; }
+
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* SETUP NOTICE */
+  .setup-notice strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  .setup-notice code { background: rgba(0,0,0,0.08); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; word-break: break-all; }
+
+  .success-screen { display: none; background: white; border-radius: 12px; padding: 48px 32px; margin-top: 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.06); animation: fadeUp 0.4s ease both; }
+  .success-icon { width: 64px; height: 64px; background: #e8f7ee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .success-title { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: var(--black); text-transform: uppercase; margin-bottom: 8px; }
+  .success-text { font-size: 15px; color: var(--grey-text); line-height: 1.6; max-width: 360px; margin: 0 auto 24px; }
+  .summary-box { background: var(--grey-light); border-radius: 10px; padding: 20px 24px; text-align: left; margin-top: 20px; }
+  .summary-box h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 12px; font-weight: 700; }
+  .summary-row { display: flex; gap: 12px; margin-bottom: 8px; font-size: 14px; }
+  .summary-key { font-weight: 600; color: var(--black); min-width: 120px; flex-shrink: 0; }
+  .summary-val { color: var(--grey-text); }
+  .btn-reset { margin-top: 24px; background: transparent; border: 2px solid var(--red); color: var(--red); border-radius: 8px; padding: 12px 32px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .btn-reset:hover { background: var(--red); color: white; }
+
+  .required { color: var(--red); margin-left: 2px; }
+  .form-footer { text-align: center; margin-top: 32px; font-size: 12px; color: #bbb; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">LESCO</div>
+  <div class="header-sub">Manufacturing (Pty) Ltd</div>
+  <div class="header-title">New Promo<br>Request</div>
+  <div class="header-desc">Fill in the form below and submit. Ricky will receive your request and handle everything from there.</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">Form completion</div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+</div>
+
+<div class="form-container" id="formWrap">
+
+  <div class="question-card" id="card-1">
+    <div class="question-number">Question 1 of 7</div>
+    <div class="question-label">Which month is this promo for? <span class="required">*</span></div>
+    <div class="question-hint">Select the month and year</div>
+    <input type="month" id="q1" min="2026-06" />
+  </div>
+
+  <div class="question-card" id="card-2">
+    <div class="question-number">Question 2 of 7</div>
+    <div class="question-label">Who is this promo targeting? <span class="required">*</span></div>
+    <div class="question-hint">Select all that apply</div>
+    <div class="options-grid" id="q2">
+      <label class="option-item"><input type="checkbox" value="Retailers"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Retailers</span></label>
+      <label class="option-item"><input type="checkbox" value="Wholesalers"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Wholesalers</span></label>
+      <label class="option-item"><input type="checkbox" value="Distributors"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Distributors</span></label>
+      <label class="option-item"><input type="checkbox" value="Contractors"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Contractors</span></label>
+      <label class="option-item"><input type="checkbox" value="All Markets"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">All Markets</span></label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-3">
+    <div class="question-number">Question 3 of 7</div>
+    <div class="question-label">Which product range does this promo focus on? <span class="required">*</span></div>
+    <div class="question-hint">Select all that apply</div>
+    <div class="options-grid" id="q3">
+      <label class="option-item"><input type="checkbox" value="Apollo Shadow"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Apollo Shadow</span></label>
+      <label class="option-item"><input type="checkbox" value="Apollo Range"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Apollo Range</span></label>
+      <label class="option-item"><input type="checkbox" value="Cover Strip"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Cover Strip</span></label>
+      <label class="option-item"><input type="checkbox" value="Pipelli / Pipelli Quad"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Pipelli / Pipelli Quad</span></label>
+      <label class="option-item"><input type="checkbox" value="Steel Range"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Steel Range</span></label>
+      <label class="option-item"><input type="checkbox" value="Dena / Dena Q"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Dena / Dena Q</span></label>
+      <label class="option-item"><input type="checkbox" value="Extension Cords"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Extension Cords</span></label>
+      <label class="option-item"><input type="checkbox" value="Surge Adaptors"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Surge Adaptors</span></label>
+      <label class="option-item"><input type="checkbox" value="Wall Boxes / ClusterLoc"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">Wall Boxes / ClusterLoc</span></label>
+      <label class="option-item"><input type="checkbox" value="DB Boards / Circuit Breakers"/><span class="custom-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="option-text">DB Boards / Circuit Breakers</span></label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-4">
+    <div class="question-number">Question 4 of 7</div>
+    <div class="question-label">What type of deal do you have in mind? <span class="required">*</span></div>
+    <div class="question-hint">Select one</div>
+    <div class="options-grid" id="q4">
+      <label class="option-item"><input type="radio" name="mechanic" value="Free stock (buy X get Y free)"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Free stock (buy X get Y free)</span></label>
+      <label class="option-item"><input type="radio" name="mechanic" value="Volume discount (tiered spend %)"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Volume discount (tiered spend %)</span></label>
+      <label class="option-item"><input type="radio" name="mechanic" value="Combo bundle deal"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Combo bundle deal</span></label>
+      <label class="option-item"><input type="radio" name="mechanic" value="New customer / first order incentive"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">New customer / first order incentive</span></label>
+      <label class="option-item"><input type="radio" name="mechanic" value="Flat % discount on selected products"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Flat % discount on selected products</span></label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-5">
+    <div class="question-number">Question 5 of 7</div>
+    <div class="question-label">Which week should this promo go out? <span class="required">*</span></div>
+    <div class="question-hint">Select one</div>
+    <div class="options-grid" id="q5">
+      <label class="option-item"><input type="radio" name="week" value="Week 1 — 1st of the month"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Week 1 — 1st of the month</span></label>
+      <label class="option-item"><input type="radio" name="week" value="Week 2 — around the 9th"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Week 2 — around the 9th</span></label>
+      <label class="option-item"><input type="radio" name="week" value="Week 3 — around the 16th"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Week 3 — around the 16th</span></label>
+      <label class="option-item"><input type="radio" name="week" value="Week 4 — around the 23rd"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Week 4 — around the 23rd</span></label>
+      <label class="option-item"><input type="radio" name="week" value="Runs all month"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">Runs all month</span></label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-6">
+    <div class="question-number">Question 6 of 7</div>
+    <div class="question-label">Any specific details or ideas?</div>
+    <div class="question-hint">Pricing, quantities, messaging angle — anything you have in mind. Type "none" to skip.</div>
+    <textarea id="q6" placeholder="e.g. Buy 10 packs of Cover Strip switches and get 2 free. Target electricians in Gauteng..."></textarea>
+  </div>
+
+  <div class="question-card" id="card-7">
+    <div class="question-number">Question 7 of 7</div>
+    <div class="question-label">What priority level is this promo? <span class="required">*</span></div>
+    <div class="question-hint">Select one</div>
+    <div class="options-grid" id="q7">
+      <label class="option-item"><input type="radio" name="priority" value="High"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">🔴 High — needs to go out this month</span></label>
+      <label class="option-item"><input type="radio" name="priority" value="Medium"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">🟡 Medium — important but flexible on timing</span></label>
+      <label class="option-item"><input type="radio" name="priority" value="Low"/><span class="custom-radio"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="white"/></svg></span><span class="option-text">🟢 Low — planning ahead</span></label>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="btn-submit" id="btnSubmit" onclick="submitForm()">Submit Promo Request</button>
+  </div>
+
+  <div class="form-footer">LESCO Manufacturing (Pty) Ltd &nbsp;·&nbsp; Confidential Internal Use</div>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 16L13 23L26 9" stroke="#1a8a4a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="success-title">Request Submitted!</div>
+    <div class="success-text">Thanks Jonathan. Ricky has your promo brief and will take it from here.</div>
+    <div class="summary-box" id="summaryBox"></div>
+    <button class="btn-reset" onclick="resetForm()">Submit Another Request</button>
+  </div>
+
+</div>
+
+<script>
+  // ⚠️ REPLACE THIS with your Google Apps Script Web App URL after deployment
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWEiVWuK2SQohErCpZM32LZPMExB3muMtNcLTaLojYqBnwqSTzO1_CfwystZ12xRtAUg/exec';
+
+  document.querySelectorAll('.option-item').forEach(item => {
+    item.addEventListener('click', function() {
+      const input = this.querySelector('input');
+      if (input.type === 'radio') {
+        document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => r.closest('.option-item').classList.remove('selected'));
+        input.checked = true;
+        this.classList.add('selected');
+      } else {
+        input.checked = !input.checked;
+        this.classList.toggle('selected', input.checked);
+      }
+      updateProgress();
+      updateActiveCards();
+    });
+  });
+
+  document.getElementById('q1').addEventListener('change', () => { updateProgress(); updateActiveCards(); });
+  document.getElementById('q6').addEventListener('input', () => { updateProgress(); updateActiveCards(); });
+
+  function getChecked(id) {
+    return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value);
+  }
+
+  function updateActiveCards() {
+    document.querySelectorAll('.question-card').forEach(c => c.classList.remove('active'));
+    if (document.getElementById('q1').value) document.getElementById('card-1').classList.add('active');
+    if (getChecked('q2').length) document.getElementById('card-2').classList.add('active');
+    if (getChecked('q3').length) document.getElementById('card-3').classList.add('active');
+    if (getChecked('q4').length) document.getElementById('card-4').classList.add('active');
+    if (getChecked('q5').length) document.getElementById('card-5').classList.add('active');
+    if (document.getElementById('q6').value.trim()) document.getElementById('card-6').classList.add('active');
+    if (getChecked('q7').length) document.getElementById('card-7').classList.add('active');
+  }
+
+  function updateProgress() {
+    let filled = 0;
+    if (document.getElementById('q1').value) filled++;
+    if (getChecked('q2').length) filled++;
+    if (getChecked('q3').length) filled++;
+    if (getChecked('q4').length) filled++;
+    if (getChecked('q5').length) filled++;
+    filled++; // q6 optional — always counts
+    if (getChecked('q7').length) filled++;
+    document.getElementById('progressFill').style.width = Math.round((filled / 7) * 100) + '%';
+  }
+
+  async function submitForm() {
+    const q1 = document.getElementById('q1').value;
+    const q2 = getChecked('q2');
+    const q3 = getChecked('q3');
+    const q4 = getChecked('q4');
+    const q5 = getChecked('q5');
+    const q6 = document.getElementById('q6').value.trim() || 'None';
+    const q7 = getChecked('q7');
+
+    if (!q1 || !q2.length || !q3.length || !q4.length || !q5.length || !q7.length) {
+      alert('Please complete all required fields before submitting.');
+      return;
+    }
+
+    const [year, month] = q1.split('-');
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const monthLabel = `${monthNames[parseInt(month)-1]} ${year}`;
+
+    const payload = {
+      month: monthLabel,
+      audience: q2.join(', '),
+      productRange: q3.join(', '),
+      mechanic: q4[0],
+      sendWeek: q5[0],
+      details: q6,
+      priority: q7[0]
+    };
+
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+    try {
+      if (APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbzWEiVWuK2SQohErCpZM32LZPMExB3muMtNcLTaLojYqBnwqSTzO1_CfwystZ12xRtAUg/exec') {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      }
+
+      // Show summary
+      const rows = [
+        { key: 'Promo Month', val: payload.month },
+        { key: 'Audience', val: payload.audience },
+        { key: 'Product Range', val: payload.productRange },
+        { key: 'Mechanic', val: payload.mechanic },
+        { key: 'Send Week', val: payload.sendWeek },
+        { key: 'Details', val: payload.details },
+        { key: 'Priority', val: payload.priority },
+      ];
+      let html = '<h4>Your Submission</h4>';
+      rows.forEach(r => { html += `<div class="summary-row"><span class="summary-key">${r.key}</span><span class="summary-val">${r.val}</span></div>`; });
+      document.getElementById('summaryBox').innerHTML = html;
+
+      document.getElementById('formWrap').querySelectorAll('.question-card, .submit-wrap, .form-footer').forEach(el => el.style.display = 'none');
+      document.getElementById('successScreen').style.display = 'block';
+      document.getElementById('progressFill').style.width = '100%';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Promo Request';
+      alert('Something went wrong. Please check your internet connection and try again.');
+    }
+  }
+
+  function resetForm() {
+    document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(i => i.checked = false);
+    document.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+    document.getElementById('q1').value = '';
+    document.getElementById('q6').value = '';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('successScreen').style.display = 'none';
+    document.getElementById('formWrap').querySelectorAll('.question-card, .submit-wrap, .form-footer').forEach(el => el.style.display = '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>
